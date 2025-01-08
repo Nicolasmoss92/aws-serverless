@@ -1,0 +1,29 @@
+# Nome do serviço no Serverless Framework
+service: my-serverless-app
+
+# Configurações do provedor
+provider:
+  name: aws                     # Provedor: Amazon Web Services
+  runtime: nodejs18.x           # Ambiente de execução: Node.js 18.x
+  region: us-east-1             # Região da AWS: Norte da Virgínia (us-east-1)
+  lambdaHashingVersion: 20201221 # Algoritmo de hashing para implantações
+
+# Definição das funções Lambda
+functions:
+  api:                          # Nome da função Lambda
+    handler: dist/main.handler  # Arquivo e função que será executada (dist/main.js -> função handler)
+    events:                     # Eventos que acionam a função
+      - http:                   # Tipo de evento: HTTP (gerenciado pelo API Gateway)
+          path: hello           # Caminho da API (URL será algo como /hello)
+          method: get           # Método HTTP que aciona a função (GET)
+
+# Lista de plugins utilizados no projeto
+plugins:
+  - serverless-offline          # Plugin para executar o serviço localmente
+  - serverless-webpack          # Plugin para empacotar o código com Webpack
+
+# Configurações personalizadas
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js # Arquivo de configuração do Webpack
+    includeModules: true              # Incluir dependências do Node.js no pacote final
